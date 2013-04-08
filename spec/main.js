@@ -41,3 +41,21 @@ describe("slice()", function() {
     });
 
 });
+
+describe("Functions", function() {
+
+    var testExpression = true,
+        testDeclaration = true;
+
+    it("Function Declarations are not hoisted but defined for entire block", function() {
+
+        expect(typeof testDeclaration).toBe("function");
+        function testDeclaration() {};
+    });
+
+    it("Function expressions are hoisted", function() {
+
+        expect(typeof testExpression).toBe("undefined");
+        var testExpression = function() {};
+    });
+});
