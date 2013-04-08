@@ -1,0 +1,43 @@
+describe("slice()", function() {
+
+    var input, answer;
+
+    beforeEach(function() {
+        input = [1, 2, 3];
+        answer = input.slice(1);
+    });
+
+    it("original array remains unchanged", function() {
+        expect(input).toEqual([1, 2, 3]);
+    });
+
+    it("returns an array", function() {
+        expect(answer instanceof Array).toBe(true);
+    });
+
+    it("slice 0 leaves input unchanged", function() {
+        expect(input.slice(0)).toEqual(input);
+    });
+
+    it("slice -1 return last element", function() {
+        expect(input.slice(-1)).toEqual([3]);
+    });
+
+    it("calling slice on an object turns it into an array", function() {
+
+        var theObject,
+            theArray,
+            testing = function() {
+                theObject = arguments;
+            };
+
+        testing(1, 2, 3);
+        theArray = Array.prototype.slice.call(theObject, 0);
+
+        expect(theObject instanceof Array).toBe(false);
+        expect(theArray instanceof Array).toBe(true);
+
+        expect(Array.prototype.slice.call({"some": "random", "object":"."}, 0) instanceof Array).toBe(true);
+    });
+
+});
