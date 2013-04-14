@@ -59,3 +59,19 @@ describe("Functions", function() {
         var testExpression = function() {};
     });
 });
+
+describe("Objects", function() {
+
+    it("are passed by reference", function() {
+
+        var obj = { val : false };
+
+        function changeObj(objIn) {
+            objIn.val = true;
+        }
+
+        changeObj(obj);
+
+        expect(obj.val).toEqual(true);
+    });
+});
