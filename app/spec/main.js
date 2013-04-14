@@ -58,11 +58,8 @@ describe("Functions", function() {
         expect(typeof testExpression).toBe("undefined");
         var testExpression = function() {};
     });
-});
-
-describe("Objects", function() {
-
-    it("are passed by reference", function() {
+    
+    it("arguments are passed by reference", function() {
 
         var obj = { val : false };
 
@@ -70,8 +67,8 @@ describe("Objects", function() {
             objIn.val = true;
         }
 
+        expect(obj.val).toEqual(false);
         changeObj(obj);
-
         expect(obj.val).toEqual(true);
     });
 });
