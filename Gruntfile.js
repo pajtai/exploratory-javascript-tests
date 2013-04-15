@@ -62,17 +62,52 @@ module.exports = function (grunt) {
             }
         },
         shell: {
-            buildToGhPages: {
+            getRef: {
                 options: {
-                    stdout: true,
-                    stderr: true
+                    callback: function(err, out, stderr, cb) {
+                        var version = grunt.file.readJSON("package.json").version;
+                        grunt.config.set("buildGhPages.shaRef", out.substring(0, 7));
+                        grunt.config.set("buildGhPages.version", version);
+                        grunt.log.writeln("sha ref is: " + out)
+                            .writeln("version is: " + version);
+
+                        cb();
+                    }
                 },
 
-                command: 'git checkout gh-pages ' +
+                command: "git rev-parse HEAD"
+            },
+            getBranch: {
+                options: {
+                    callback: function(err, out, stderr, cb) {
+                        grunt.config.set("buildGhPages.branch", out);
+                        grunt.log.writeln("branch is: " + out);
+                        cb();
+                    }
+                },
+
+                command: "git rev-parse --abbrev-ref HEAD"
+            },
+            switch: {
+                options: {
+                    stderr: true,
+                    stdout: true
+                },
+
+                command: 'git checkout gh-pages '
+            },
+            finish: {
+                options: {
+                    stderr: true,
+                    stdout: true
+                },
+
+                command:
 
 // make sure you pull the latest from the repo before trying to commit new files.
-                    '&& git pull --rebase ' +
-
+                    //'&& git pull --rebase ' +
+// Increment the build number
+                    'cat .build ' +
 // get a list of all files in stage and delete everything except for targets, node_modules, cache, temp, and logs
 // rm does not delete root level hidden files
                     '&& ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
@@ -80,16 +115,13 @@ module.exports = function (grunt) {
 // copy from the stage folder to the current (root) folder
                     '&& cp -r dist/* . ' +
                     '&& rm -r dist ' +
-                    '&& more .build ' +
-// Increment the build number
-                    '&& echo $(($(<.build) + 1))>.build ' +
-                    '&& more .build ' +
+
 // add any files that may have been created
                     '&& git add -A ' +
 
 // commit all files using the version number as the commit message
 // <%= %> is grunt templating
-                    '&& git commit -am "Build: "$(<.build)' +
+                    '&& git commit -am "Build: <%= grunt.file.read(".build") %> Branch: <%= grunt.config.get("buildGhPages.branch") %> Version: <%= grunt.config.get("buildGhPages.branch") %> SHA: <%= grunt.config.get("buildGhPages.shaRef") %>"' +
 
 // push changes to gitlab
                     '&& git push origin gh-pages ' +
@@ -101,6 +133,10 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.registerTask("bumpBuild", function () {
+        var build = ".build";
+        grunt.file.write(build, parseInt(grunt.file.read(build), 10) + 1);
+    });
     grunt.renameTask('regarde', 'watch');
 
     grunt.registerTask('server', function (target) {
@@ -124,6 +160,10 @@ module.exports = function (grunt) {
     grunt.registerTask("build", [
         'clean',
         'copy',
-        'shell'
+        'shell:getRef',
+        'shell:getBranch',
+        'shell:switch',
+        'bumpBuild',
+        'shell:finish'
     ]);
 };
