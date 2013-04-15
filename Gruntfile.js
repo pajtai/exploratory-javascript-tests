@@ -68,14 +68,7 @@ module.exports = function (grunt) {
                     stderr: true
                 },
 
-// First stash and label any local changes
-// This is needed because - at a minimum - the version number is bumped
-                command: 'git stash save "Build script saving current branch state" ' +
-
-// switch to the stage branch
-// switching branches doesn't break grunt, since the config object is already loaded in
-// grunt is running locally, and node_modules is preserved (since it is ignored)
-                    '&& git checkout gh-pages ' +
+                command: 'git checkout gh-pages ' +
 
 // make sure you pull the latest from the repo before trying to commit new files.
                     '&& git pull --rebase ' +
@@ -102,10 +95,7 @@ module.exports = function (grunt) {
 
 // now that everything is done, we have to switch back to the branch we started from
 // the - is a shortcutl for @{-1} which means we go back to the previous branch
-                    '&& git checkout - ' +
-
-// We apply and discard the stash we created at the beginning
-                    '&& git stash pop'
+                    '&& git checkout - '
             }
         }
     });
