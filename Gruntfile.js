@@ -121,7 +121,7 @@ module.exports = function (grunt) {
 
 // commit all files using the version number as the commit message
 // <%= %> is grunt templating
-                    '&& git commit -am "Build: <%= grunt.file.read(".build") %> Branch: <%= grunt.config.get("buildGhPages.branch") %> Version: <%= grunt.config.get("buildGhPages.branch") %> SHA: <%= grunt.config.get("buildGhPages.shaRef") %>"' +
+                    '&& git commit -am "Build: <%= grunt.file.read(".build") %> Branch: <%= grunt.config.get("buildGhPages.branch") %> Version: <%= grunt.config.get("buildGhPages.version") %> SHA: <%= grunt.config.get("buildGhPages.shaRef") %>"' +
 
 // push changes to gitlab
                     '&& git push origin gh-pages ' +
