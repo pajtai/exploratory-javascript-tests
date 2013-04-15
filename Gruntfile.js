@@ -105,9 +105,7 @@ module.exports = function (grunt) {
                 command:
 
 // make sure you pull the latest from the repo before trying to commit new files.
-                    //'&& git pull --rebase ' +
-// Increment the build number
-                    'cat .build ' +
+                    'git pull --rebase ' +
 // get a list of all files in stage and delete everything except for targets, node_modules, cache, temp, and logs
 // rm does not delete root level hidden files
                     '&& ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
