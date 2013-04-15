@@ -94,7 +94,9 @@ module.exports = function (grunt) {
                     stdout: true
                 },
 
-                command: 'git checkout gh-pages '
+                command: 'git checkout gh-pages ' +
+                    // make sure you pull the latest from the repo before trying to commit new files.
+                    '&& git pull --rebase '
             },
             finish: {
                 options: {
@@ -104,11 +106,9 @@ module.exports = function (grunt) {
 
                 command:
 
-// make sure you pull the latest from the repo before trying to commit new files.
-                    'git pull --rebase ' +
 // get a list of all files in stage and delete everything except for targets, node_modules, cache, temp, and logs
 // rm does not delete root level hidden files
-                    '&& ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
+                    'ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
 
 // copy from the stage folder to the current (root) folder
                     '&& cp -r dist/* . ' +
