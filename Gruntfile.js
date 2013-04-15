@@ -80,9 +80,10 @@ module.exports = function (grunt) {
 // copy from the stage folder to the current (root) folder
                     '&& cp -r dist/* . ' +
                     '&& rm -r dist ' +
+                    '&& more .build ' +
 // Increment the build number
                     '&& echo $(($(<.build) + 1))>.build ' +
-
+                    '&& more .build ' +
 // add any files that may have been created
                     '&& git add -A ' +
 
