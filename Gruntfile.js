@@ -85,7 +85,7 @@ module.exports = function (grunt) {
                     '&& ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
 
 // copy from the stage folder to the current (root) folder
-                    '&& cp -R dist/ . ' +
+                    '&& cp -r dist/* . ' +
 
 // Increment the build number
                     '&& echo $(($(<.build) + 1))>.build ' +
