@@ -52,6 +52,61 @@ module.exports = function (grunt) {
             server: {
                 path: 'http://localhost:<%= connect.options.port %>'
             }
+        },
+        clean: ['dist'],
+        copy: {
+            build: {
+                files: [
+                    {expand: true, cwd: 'app/', src: ['**'], dest: 'dist/'}
+                ]
+            }
+        },
+        shell: {
+            buildToGhPages: {
+                options: {
+                    stdout: true,
+                    stderr: true
+                },
+
+// First stash and label any local changes
+// This is needed because - at a minimum - the version number is bumped
+                command: 'git stash save "Build script saving current branch state" ' +
+
+// switch to the stage branch
+// switching branches doesn't break grunt, since the config object is already loaded in
+// grunt is running locally, and node_modules is preserved (since it is ignored)
+                    '&& git checkout gh-pages ' +
+
+// make sure you pull the latest from the repo before trying to commit new files.
+                    '&& git pull --rebase ' +
+
+// get a list of all files in stage and delete everything except for targets, node_modules, cache, temp, and logs
+// rm does not delete root level hidden files
+                    '&& ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
+
+// copy from the stage folder to the current (root) folder
+                    '&& cp -R dist/ . ' +
+
+// Increment the build number
+                    '&& echo $(($(<.build) + 1))>.build ' +
+
+// add any files that may have been created
+                    '&& git add -A ' +
+
+// commit all files using the version number as the commit message
+// <%= %> is grunt templating
+                    '&& git commit -am "Build: "$(<.build)' +
+
+// push changes to gitlab
+                    '&& git push origin gh-pages ' +
+
+// now that everything is done, we have to switch back to the branch we started from
+// the - is a shortcutl for @{-1} which means we go back to the previous branch
+                    '&& git checkout - ' +
+
+// We apply and discard the stash we created at the beginning
+                    '&& git stash pop'
+            }
         }
     });
 
@@ -73,5 +128,11 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'server'
+    ]);
+
+    grunt.registerTask("build", [
+        'clean',
+        'copy',
+        'shell'
     ]);
 };
