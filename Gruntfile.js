@@ -61,72 +61,9 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        shell: {
-            getRef: {
-                options: {
-                    callback: function(err, out, stderr, cb) {
-                        var version = grunt.file.readJSON("package.json").version;
-                        grunt.config.set("buildGhPages.shaRef", out.substring(0, 7));
-                        grunt.config.set("buildGhPages.version", version);
-                        grunt.log.writeln("sha ref is: " + out)
-                            .writeln("version is: " + version);
+        build_gh_pages: {
+            gh_pages: {
 
-                        cb();
-                    }
-                },
-
-                command: "git rev-parse HEAD"
-            },
-            getBranch: {
-                options: {
-                    callback: function(err, out, stderr, cb) {
-                        grunt.config.set("buildGhPages.branch", out);
-                        grunt.log.writeln("branch is: " + out);
-                        cb();
-                    }
-                },
-
-                command: "git rev-parse --abbrev-ref HEAD"
-            },
-            switch: {
-                options: {
-                    stderr: true,
-                    stdout: true
-                },
-
-                command: 'git checkout gh-pages ' +
-                    // make sure you pull the latest from the repo before trying to commit new files.
-                    '&& git pull --rebase '
-            },
-            finish: {
-                options: {
-                    stderr: true,
-                    stdout: true
-                },
-
-                command:
-
-// get a list of all files in stage and delete everything except for targets, node_modules, cache, temp, and logs
-// rm does not delete root level hidden files
-                    'ls | grep -v ^dist$ | grep -v ^node_modules$ | xargs rm -r ' +
-
-// copy from the stage folder to the current (root) folder
-                    '&& cp -r dist/* . ' +
-                    '&& rm -r dist ' +
-
-// add any files that may have been created
-                    '&& git add -A ' +
-
-// commit all files using the version number as the commit message
-// <%= %> is grunt templating
-                    '&& git commit -am "Build: <%= grunt.file.read(".build") %> Branch: <%= grunt.config.get("buildGhPages.branch") %> Version: <%= grunt.config.get("buildGhPages.version") %> SHA: <%= grunt.config.get("buildGhPages.shaRef") %>"' +
-
-// push changes to gitlab
-                    '&& git push origin gh-pages ' +
-
-// now that everything is done, we have to switch back to the branch we started from
-// the - is a shortcutl for @{-1} which means we go back to the previous branch
-                    '&& git checkout - '
             }
         }
     });
@@ -158,10 +95,6 @@ module.exports = function (grunt) {
     grunt.registerTask("build", [
         'clean',
         'copy',
-        'shell:getRef',
-        'shell:getBranch',
-        'shell:switch',
-        'bumpBuild',
-        'shell:finish'
+        'build_gh_pages:gh_pages'
     ]);
 };
