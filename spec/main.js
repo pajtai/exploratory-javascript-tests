@@ -1,3 +1,35 @@
+
+describe("Function", function() {
+
+    var testExpression = true,
+        testDeclaration = true;
+
+    it("Function Declarations are not hoisted but defined for entire block", function() {
+
+        expect(typeof testDeclaration).toBe("function");
+        function testDeclaration() {};
+    });
+
+    it("Function expressions are hoisted", function() {
+
+        expect(typeof testExpression).toBe("undefined");
+        var testExpression = function() {};
+    });
+
+    it("arguments are passed by reference", function() {
+
+        var obj = { val : false };
+
+        function changeObj(objIn) {
+            objIn.val = true;
+        }
+
+        expect(obj.val).toEqual(false);
+        changeObj(obj);
+        expect(obj.val).toEqual(true);
+    });
+});
+
 describe("slice()", function() {
 
     var input, answer;
@@ -42,33 +74,17 @@ describe("slice()", function() {
 
 });
 
-describe("Functions", function() {
+describe("String", function() {
+   it("concatenating to a string leaves the original unchanged", function() {
 
-    var testExpression = true,
-        testDeclaration = true;
+       var originalString = "original",
+           referenceString = originalString;
 
-    it("Function Declarations are not hoisted but defined for entire block", function() {
+       expect(originalString).toBe(referenceString);
 
-        expect(typeof testDeclaration).toBe("function");
-        function testDeclaration() {};
-    });
+       referenceString += " and another string";
 
-    it("Function expressions are hoisted", function() {
-
-        expect(typeof testExpression).toBe("undefined");
-        var testExpression = function() {};
-    });
-    
-    it("arguments are passed by reference", function() {
-
-        var obj = { val : false };
-
-        function changeObj(objIn) {
-            objIn.val = true;
-        }
-
-        expect(obj.val).toEqual(false);
-        changeObj(obj);
-        expect(obj.val).toEqual(true);
-    });
+       expect(originalString).toBe("original");
+       expect(referenceString).not.toBe(originalString);
+   });
 });
