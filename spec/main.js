@@ -30,6 +30,33 @@ describe("Function", function() {
     });
 });
 
+describe("Object", function() {
+
+    var obj = {};
+
+   it("objects have a constructor field", function() {
+
+       expect(obj.constructor).toBeDefined();
+   });
+
+   it("arrays can be differentiated from other objects using the constructor field", function() {
+
+       var arrs = [[], new Array(), Array.prototype.slice.call({}, 0)],
+           constr = function() {},
+           objs = [{}, new Object(), new constr()],
+           i;
+
+       for (i = 0; i < arrs.length; ++i) {
+           expect(arrs[i].constructor).toEqual(Array);
+           expect(arrs[i].constructor).not.toEqual(Object);
+       }
+
+       for (i = 0; i < objs.length; ++i) {
+           expect(objs[i].constructor).not.toEqual(Array);
+       }
+   });
+});
+
 describe("slice()", function() {
 
     var input, answer;
