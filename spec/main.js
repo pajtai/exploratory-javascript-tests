@@ -55,6 +55,31 @@ describe("Object", function() {
            expect(objs[i].constructor).not.toEqual(Array);
        }
    });
+
+   describe("Object inheritance", function() {
+
+       it("changing the prototype, changes that field on all other objects with that prototype dynamically", function() {
+
+           var Const1 = function() {},
+               Const2 = function() {},
+               obj1, obj2;
+
+           Const1.prototype.test = 42;
+
+           obj1 = new Const1();
+           Const2.prototype = obj1;
+           obj2 = new Const2();
+
+           expect(obj1.prototype).toBe(obj2.prototype);
+           expect(obj1.test).toEqual(42);
+           expect(obj2.test).toEqual(42);
+
+           Const1.prototype.test = "new";
+
+           expect(obj1.test).toEqual("new");
+           expect(obj2.test).toEqual("new");
+       });
+   });
 });
 
 describe("slice()", function() {
