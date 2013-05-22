@@ -72,6 +72,17 @@ describe("Object", function() {
             changeObj(obj);
             expect(obj.val).toEqual(true);
         });
+
+        it("An object passed as an argument remains unchanged if overwritten inside a function", function () {
+            var obj = { val: true },
+                func = function (objIn) {
+                    objIn = { val: false };
+                };
+
+            expect(obj.val).toEqual(true);
+            func(obj);
+            expect(obj.val).toEqual(true);
+        });
     });
 
    describe("Object inheritance", function() {
