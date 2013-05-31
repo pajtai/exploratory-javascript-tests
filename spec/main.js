@@ -140,6 +140,14 @@ describe("slice()", function() {
         answer = input.slice(1);
     });
 
+    it("slice is available on strings", function() {
+        expect("".slice).not.toBe(undefined);
+    });
+
+    it("slice is available on arrays", function() {
+        expect([].slice).not.toBe(undefined);
+    });
+
     it("original array remains unchanged", function() {
         expect(input).toEqual([1, 2, 3]);
     });
@@ -182,6 +190,14 @@ describe("splice()", function() {
     beforeEach(function() {
 
         input = [0,1,2,3,4,5]
+    });
+
+    it("splice is NOT available on strings", function() {
+        expect("".splice).toBe(undefined);
+    });
+
+    it("splice is available on arrays", function() {
+        expect([].splice).not.toBe(undefined);
     });
 
     it("splice returns the removed portion of the array", function() {
