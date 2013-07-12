@@ -1,10 +1,12 @@
+var expect = chai.expect;
+
 describe("Object", function() {
 
     var obj = {};
 
     it("objects have a constructor field", function() {
 
-       expect(obj.constructor).toBeDefined();
+       expect(obj.constructor).to.exist;
     });
 
     describe("Array", function() {
@@ -14,7 +16,7 @@ describe("Object", function() {
 
             arr[99] = "test";
             arr[-3] = "test";
-            expect(arr.length).toBe(100);
+            expect(arr.length).to.equal(100);
         });
 
         it("arrays can be differentiated from other objects using the constructor field", function() {
@@ -25,12 +27,12 @@ describe("Object", function() {
                 i;
 
             for (i = 0; i < arrs.length; ++i) {
-                expect(arrs[i].constructor).toEqual(Array);
-                expect(arrs[i].constructor).not.toEqual(Object);
+                expect(arrs[i].constructor).to.equal(Array);
+                expect(arrs[i].constructor).not.to.equal(Object);
             }
 
             for (i = 0; i < objs.length; ++i) {
-                expect(objs[i].constructor).not.toEqual(Array);
+                expect(objs[i].constructor).not.to.equal(Array);
             }
         });
 
@@ -39,7 +41,7 @@ describe("Object", function() {
             var arr =[];
 
             arr[-1] = "tomato";
-            expect(arr[-1]).toEqual("tomato");
+            expect(arr[-1]).to.equal("tomato");
         });
     });
 
@@ -50,13 +52,13 @@ describe("Object", function() {
 
         it("Function Declarations are not hoisted but defined for entire block", function() {
 
-            expect(typeof testDeclaration).toBe("function");
+            expect(typeof testDeclaration).to.equal("function");
             function testDeclaration() {};
         });
 
         it("Function expressions are hoisted", function() {
 
-            expect(typeof testExpression).toBe("undefined");
+            expect(typeof testExpression).to.equal("undefined");
             var testExpression = function() {};
         });
 
@@ -68,9 +70,9 @@ describe("Object", function() {
                 objIn.val = true;
             }
 
-            expect(obj.val).toEqual(false);
+            expect(obj.val).to.equal(false);
             changeObj(obj);
-            expect(obj.val).toEqual(true);
+            expect(obj.val).to.equal(true);
         });
 
         it("An object passed as an argument remains unchanged if overwritten inside a function", function () {
@@ -79,9 +81,9 @@ describe("Object", function() {
                     objIn = { val: false };
                 };
 
-            expect(obj.val).toEqual(true);
+            expect(obj.val).to.equal(true);
             func(obj);
-            expect(obj.val).toEqual(true);
+            expect(obj.val).to.equal(true);
         });
     });
 
@@ -99,14 +101,14 @@ describe("Object", function() {
            Const2.prototype = obj1;
            obj2 = new Const2();
 
-           expect(obj1.prototype).toBe(obj2.prototype);
-           expect(obj1.test).toEqual(42);
-           expect(obj2.test).toEqual(42);
+           expect(obj1.prototype).to.equal(obj2.prototype);
+           expect(obj1.test).to.equal(42);
+           expect(obj2.test).to.equal(42);
 
            Const1.prototype.test = "new";
 
-           expect(obj1.test).toEqual("new");
-           expect(obj2.test).toEqual("new");
+           expect(obj1.test).to.equal("new");
+           expect(obj2.test).to.equal("new");
        });
    });
 
@@ -116,17 +118,17 @@ describe("Object", function() {
             var originalString = "original",
                 referenceString = originalString;
 
-            expect(originalString).toBe(referenceString);
+            expect(originalString).to.equal(referenceString);
 
             referenceString += " and another string";
 
-            expect(originalString).toBe("original");
-            expect(referenceString).not.toBe(originalString);
+            expect(originalString).to.equal("original");
+            expect(referenceString).not.to.equal(originalString);
         });
 
         it("string literal are automatically converted into string objects", function() {
 
-            expect("test".constructor).toBe(String);
+            expect("test".constructor).to.equal(String);
         });
     });
 });
@@ -141,27 +143,27 @@ describe("slice()", function() {
     });
 
     it("slice is available on strings", function() {
-        expect("".slice).not.toBe(undefined);
+        expect("".slice).not.to.equal(undefined);
     });
 
     it("slice is available on arrays", function() {
-        expect([].slice).not.toBe(undefined);
+        expect([].slice).not.to.equal(undefined);
     });
 
     it("original array remains unchanged", function() {
-        expect(input).toEqual([1, 2, 3]);
+        expect(input).to.deep.equal([1, 2, 3]);
     });
 
     it("returns an array", function() {
-        expect(answer instanceof Array).toBe(true);
+        expect(answer instanceof Array).to.be.true;
     });
 
     it("slice 0 leaves input unchanged", function() {
-        expect(input.slice(0)).toEqual(input);
+        expect(input.slice(0)).to.deep.equal(input);
     });
 
     it("slice -1 return last element", function() {
-        expect(input.slice(-1)).toEqual([3]);
+        expect(input.slice(-1)).to.deep.equal([3]);
     });
 
     it("calling slice on an object turns it into an array", function() {
