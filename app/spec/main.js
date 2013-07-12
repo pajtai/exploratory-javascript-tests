@@ -177,10 +177,10 @@ describe("slice()", function() {
         testing(1, 2, 3);
         theArray = Array.prototype.slice.call(theObject, 0);
 
-        expect(theObject instanceof Array).toBe(false);
-        expect(theArray instanceof Array).toBe(true);
+        expect(theObject instanceof Array).to.be.false
+        expect(theArray instanceof Array).to.be.true;
 
-        expect(Array.prototype.slice.call({"some": "random", "object":"."}, 0) instanceof Array).toBe(true);
+        expect(Array.prototype.slice.call({"some": "random", "object":"."}, 0) instanceof Array).to.be.true;
     });
 
 });
@@ -195,16 +195,16 @@ describe("splice()", function() {
     });
 
     it("splice is NOT available on strings", function() {
-        expect("".splice).toBe(undefined);
+        expect("".splice).to.equal(undefined);
     });
 
     it("splice is available on arrays", function() {
-        expect([].splice).not.toBe(undefined);
+        expect([].splice).not.to.equal(undefined);
     });
 
     it("splice returns the removed portion of the array", function() {
 
-        expect(input.splice(3,3)).toEqual([3,4,5]);
+        expect(input.splice(3,3)).to.deep.equal([3,4,5]);
     });
 
     it("splice changes the original array", function() {
@@ -213,14 +213,14 @@ describe("splice()", function() {
 
         input.splice(3,3);
 
-        expect(input2).toBe(input);
-        expect(input).not.toEqual([0,1,2,3,4,5]);
+        expect(input2).to.equal(input);
+        expect(input).not.to.deep.equal([0,1,2,3,4,5]);
     });
 
     it("splice can insert multiple elements as separate arguments into the array", function() {
 
         input.splice(3,3,3,2,1,0);
 
-        expect(input).toEqual([0,1,2,3,2,1,0]);
+        expect(input).to.deep.equal([0,1,2,3,2,1,0]);
     });
 });
