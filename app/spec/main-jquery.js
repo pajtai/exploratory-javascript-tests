@@ -61,7 +61,7 @@ describe("Deferred", function() {
     it("A promise listens to the deferred it was created from", function() {
         var done = false;
 
-        $.when(promise).always(function() {
+        promise.always(function() {
             done = true;
         });
 
