@@ -93,7 +93,7 @@ describe("Deferred", function() {
         promise2.done(function() {
             dones.push(2);
         });
-        
+
         expect(dones.length).to.equal(0);
         deferred.resolve();
         expect(dones.length).to.equal(1);

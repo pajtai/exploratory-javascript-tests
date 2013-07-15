@@ -92,7 +92,7 @@ module.exports = function (grunt) {
         'server'
     ]);
 
-    grunt.registerTask("build", [
+    grunt.registerTask("deploy", [
         'clean',
         'copy',
         'build_gh_pages:gh_pages'
