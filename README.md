@@ -3,7 +3,8 @@ exploratory-javascript-tests
 
 Some tests to help me remember the behavior of Javascript.
 
-Tests can be viewed [here](http://pajtai.github.io/exploratory-javascript-tests/).
+* Vanilla JavaScript tests can be viewed [here](http://pajtai.github.io/exploratory-javascript-tests/).
+* jQuery tests can be viewed [here](http://pajtai.github.io/exploratory-javascript-tests/index-jquery.html).
 
 To use this repo, clone it and `npm install` for all the goodies.
 
