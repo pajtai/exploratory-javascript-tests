@@ -40,18 +40,18 @@ describe("Deferred", function() {
         describe("on promises", function() {
             var i;
 
-            for (i=0; i<promiseAndDeferredMethods.length; ++i) {
-                (function(i) {
-                    it("includes " + promiseAndDeferredMethods[i], function() {
-                        expect(typeof promise[promiseAndDeferredMethods[i]]).to.equal("function");
-                    });
-                }(i));
-            }
-
             for (i=0; i<deferredOnlyMethods.length; ++i) {
                 (function(i) {
                     it("does not include " + deferredOnlyMethods[i], function() {
                         expect(typeof promise[deferredOnlyMethods[i]]).to.equal("undefined");
+                    });
+                }(i));
+            }
+
+            for (i=0; i<promiseAndDeferredMethods.length; ++i) {
+                (function(i) {
+                    it("includes " + promiseAndDeferredMethods[i], function() {
+                        expect(typeof promise[promiseAndDeferredMethods[i]]).to.equal("function");
                     });
                 }(i));
             }

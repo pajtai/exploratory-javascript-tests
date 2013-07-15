@@ -49,8 +49,11 @@ module.exports = function (grunt) {
             }
         },
         open: {
-            server: {
+            index: {
                 path: 'http://0.0.0.0:<%= connect.options.port %>'
+            },
+            jquery: {
+                path: 'http://0.0.0.0:<%= connect.options.port %>/index-jquery.html'
             }
         },
         clean: ['dist'],
@@ -82,11 +85,23 @@ module.exports = function (grunt) {
         grunt.task.run([
             'livereload-start',
             'connect:livereload',
-            'open',
+            'open:index',
             'watch'
         ]);
     });
 
+    grunt.registerTask('server-jquery', function (target) {
+        if (target === 'dist') {
+            return grunt.task.run(['open', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'livereload-start',
+            'connect:livereload',
+            'open:jquery',
+            'watch'
+        ]);
+    });
 
     grunt.registerTask('default', [
         'server'

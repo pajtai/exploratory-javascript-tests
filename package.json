@@ -1,6 +1,6 @@
 {
   "name": "js-tests",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "dependencies": {},
   "devDependencies": {
     "grunt-regarde": "~0.1.1",
