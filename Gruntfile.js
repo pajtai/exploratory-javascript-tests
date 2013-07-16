@@ -54,6 +54,9 @@ module.exports = function (grunt) {
             },
             jquery: {
                 path: 'http://0.0.0.0:<%= connect.options.port %>/index-jquery.html'
+            },
+            deferred: {
+                path: 'http://0.0.0.0:<%= connect.options.port %>/index-deferred.html'
             }
         },
         clean: ['dist'],
@@ -78,27 +81,11 @@ module.exports = function (grunt) {
     grunt.renameTask('regarde', 'watch');
 
     grunt.registerTask('server', function (target) {
-        if (target === 'dist') {
-            return grunt.task.run(['open', 'connect:dist:keepalive']);
-        }
-
+        target = target || 'index';
         grunt.task.run([
             'livereload-start',
             'connect:livereload',
-            'open:index',
-            'watch'
-        ]);
-    });
-
-    grunt.registerTask('server-jquery', function (target) {
-        if (target === 'dist') {
-            return grunt.task.run(['open', 'connect:dist:keepalive']);
-        }
-
-        grunt.task.run([
-            'livereload-start',
-            'connect:livereload',
-            'open:jquery',
+            'open:' + target,
             'watch'
         ]);
     });
