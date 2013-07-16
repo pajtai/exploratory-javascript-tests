@@ -41,24 +41,48 @@ describe("Deferred Example", function() {
     //  api
     //
 
-    describe("with a PurchaseTitleWorker", function() {
+    //TODO: move this into a separate file
+    function PurchaseTitleWorker(view, api) {
+        this.view = view;
+        this.api = api;
+    }
 
-        it("initializes the worker with an api and a view object", function() {
+    PurchaseTitleWorker.prototype.getApi = getApi;
+    PurchaseTitleWorker.prototype.getView = getView;
+    PurchaseTitleWorker.prototype.getAuthToken = getAuthToken;
+    PurchaseTitleWorker.prototype.purchaseTitle = purchaseTitle;
 
+    describe("The PurchaseTitleWorker", function() {
+
+        var worker, api, view;
+
+        beforeEach(function() {
+            api = 1;
+            view = sinon.mock({
+                showLoginModal: function () {}
+            });
+            worker = new PurchaseTitleWorker(view, api);
         });
 
-        describe("makes a purchase using purchaseTitle(titleId)", function() {
+        it("initializes the worker with an api and a view object", function() {
+            should.exist(worker.getApi());
+            should.exist(worker.getView());
+        });
 
-            describe("for unauthorzied users", function() {
+        describe("makes a purchase using purchaseTitle(titleId).", function() {
 
-                it("the authToken is empty", function() {
+            describe("For unauthorzied users", function() {
 
+                it("the authToken does not exist", function() {
+                    should.not.exist(worker.getAuthToken());
                 });
 
                 describe("the login modal", function() {
 
                     it("is displayed", function() {
 
+                        
+                        view.showLoginModal.should.have.been.calledOnce();
                     });
 
                     it("returns a promise that when resolved continues with the purchase " +
@@ -104,4 +128,22 @@ describe("Deferred Example", function() {
             });
         });
     });
+
+    function getApi() {
+        return this.api;
+    }
+
+    function getView() {
+        return this.view;
+    }
+
+    function getAuthToken() {
+        return this.authToken;
+    }
+
+    function purchaseTitle(titleId) {
+        if (!this.getAuthToken()) {
+            this.view.showLoginModal();
+        }
+    }
 });
