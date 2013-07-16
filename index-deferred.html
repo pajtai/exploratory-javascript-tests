@@ -1,14 +1,18 @@
 <html>
 <head>
-    <title>jQuery Exploratory Tests</title>
+    <title>Deferred Example</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="components/mocha/mocha.css" />
     <script src="components/mocha/mocha.js"></script>
     <script src="components/chai/chai.js"></script>
+    <script src="components/sinon-chai/lib/sinon-chai.js"></script>
+    <script src="components/sinon/lib/sinon.js"></script>
+    <script src="components/sinon/lib/sinon/util/fake_timers.js"></script>
+    <script src="components/sinon/lib/sinon/util/fake_server.js"></script>
     <script>mocha.setup('bdd')</script>
     <script src="components/jquery/jquery.js"></script>
-    <script src="spec/main-jquery.js"></script>
+    <script src="spec/examples/main-deferred.js"></script>
 </head>
 <body>
 <div id="mocha"></div>
