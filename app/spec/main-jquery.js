@@ -1,4 +1,4 @@
-var expect = chai.expect;
+var should = chai.should();
 
 // Includel a stack trace when needed
 // chai.Assertion.includeStack = true;
@@ -31,7 +31,7 @@ describe("Deferred", function() {
             for (i=0; i<allMethods.length; ++i) {
                 (function(i) {
                     it("includes " + allMethods[i], function() {
-                        expect(typeof deferred[allMethods[i]]).to.equal("function");
+                        (typeof deferred[allMethods[i]]).should.equal("function");
                     });
                 }(i));
             }
@@ -43,7 +43,7 @@ describe("Deferred", function() {
             for (i=0; i<deferredOnlyMethods.length; ++i) {
                 (function(i) {
                     it("does not include " + deferredOnlyMethods[i], function() {
-                        expect(typeof promise[deferredOnlyMethods[i]]).to.equal("undefined");
+                        (typeof promise[deferredOnlyMethods[i]]).should.equal("undefined");
                     });
                 }(i));
             }
@@ -51,7 +51,7 @@ describe("Deferred", function() {
             for (i=0; i<promiseAndDeferredMethods.length; ++i) {
                 (function(i) {
                     it("includes " + promiseAndDeferredMethods[i], function() {
-                        expect(typeof promise[promiseAndDeferredMethods[i]]).to.equal("function");
+                        (typeof promise[promiseAndDeferredMethods[i]]).should.equal("function");
                     });
                 }(i));
             }
@@ -65,9 +65,9 @@ describe("Deferred", function() {
             done = true;
         });
 
-        expect(done).to.be.false;
+        done.should.be.false;
         deferred.resolve();
-        expect(done).to.be.true;
+        done.should.be.true;
     });
 
     it("'always' runs when a deferred is rejected", function() {
@@ -77,9 +77,9 @@ describe("Deferred", function() {
             done = true;
         });
 
-        expect(done).to.be.false;
+        done.should.be.false;
         deferred.reject();
-        expect(done).to.be.true;
+        done.should.be.true;
     });
 
     it("promises can chain callbacks using, 'then'", function() {
@@ -94,12 +94,12 @@ describe("Deferred", function() {
             dones.push(2);
         });
 
-        expect(dones.length).to.equal(0);
+        dones.length.should.equal(0);
         deferred.resolve();
-        expect(dones.length).to.equal(1);
+        dones.length.should.equal(1);
         deferred2.resolve();
-        expect(dones.length).to.equal(2);
+        dones.length.should.equal(2);
 
-        expect(dones).to.deep.equal([1,2]);
+        dones.should.deep.equal([1,2]);
     });
 });
