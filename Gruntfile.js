@@ -26,7 +26,8 @@ module.exports = function (grunt) {
             livereload: {
                 files: [
                     '<%= yeoman.app %>/*.html',
-                    '{.tmp,<%= yeoman.app %>}/spec/{,*/}*.js'
+                    '{.tmp,<%= yeoman.app %>}/spec/**/*.js',
+                    '{.tmp,<%= yeoman.app %>}/src/**/*.js'
                 ],
                 tasks: ['livereload']
             }

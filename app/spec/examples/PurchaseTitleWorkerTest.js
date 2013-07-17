@@ -41,16 +41,6 @@ describe("Deferred Example", function() {
     //  api
     //
 
-    //TODO: move this into a separate file
-    function PurchaseTitleWorker(view, api) {
-        this.view = view;
-        this.api = api;
-    }
-
-    PurchaseTitleWorker.prototype.getApi = getApi;
-    PurchaseTitleWorker.prototype.getView = getView;
-    PurchaseTitleWorker.prototype.getAuthToken = getAuthToken;
-    PurchaseTitleWorker.prototype.purchaseTitle = purchaseTitle;
 
     describe("The PurchaseTitleWorker", function() {
 
@@ -58,9 +48,9 @@ describe("Deferred Example", function() {
 
         beforeEach(function() {
             api = 1;
-            view = sinon.mock({
-                showLoginModal: function () {}
-            });
+            view = {
+                showLoginModal: sinon.spy()
+            };
             worker = new PurchaseTitleWorker(view, api);
         });
 
@@ -71,6 +61,9 @@ describe("Deferred Example", function() {
 
         describe("makes a purchase using purchaseTitle(titleId).", function() {
 
+            beforeEach(function() {
+                worker.purchaseTitle(123);
+            });
             describe("For unauthorzied users", function() {
 
                 it("the authToken does not exist", function() {
@@ -80,9 +73,7 @@ describe("Deferred Example", function() {
                 describe("the login modal", function() {
 
                     it("is displayed", function() {
-
-                        
-                        view.showLoginModal.should.have.been.calledOnce();
+                        view.showLoginModal.should.have.been.calledOnce;
                     });
 
                     it("returns a promise that when resolved continues with the purchase " +
@@ -128,22 +119,4 @@ describe("Deferred Example", function() {
             });
         });
     });
-
-    function getApi() {
-        return this.api;
-    }
-
-    function getView() {
-        return this.view;
-    }
-
-    function getAuthToken() {
-        return this.authToken;
-    }
-
-    function purchaseTitle(titleId) {
-        if (!this.getAuthToken()) {
-            this.view.showLoginModal();
-        }
-    }
 });
