@@ -10,20 +10,6 @@ describe("Deferred Example", function() {
         this.clock.restore();
     });
 
-    // clock example
-//    it("fires in 500ms", function() {
-//       var fire = false;
-//       fire.should.be.false;
-//       setTimeout(function() {
-//           fire = true;
-//       }, 500);
-//        this.clock.tick(499);
-//        fire.should.be.false;
-//        this.clock.tick(500);
-//        fire.should.be.true;
-//    });
-
-
     // OUTLINE:
     //
     //  purchaseTitle(titleId)
@@ -41,17 +27,29 @@ describe("Deferred Example", function() {
     //  api
     //
 
+    //TODO: implement using requirejs
 
+    // View and Api are stubbed out but no implemented yest
+    // we know the will retunr promises that are resolved with the data we need
     describe("The PurchaseTitleWorker", function() {
 
-        var worker, api, view;
+        var worker, api, view,
+            viewDeferred, apiDeferred;
 
         beforeEach(function() {
-            api = 1;
-            view = {
-                showLoginModal: sinon.spy()
-            };
+            api = new PurchaseApi();
+            view = new PurchaseView();
+
+            // Since we know api and view will be implemented using promises,
+            // we can exercise the worker with stubbed out api and view that
+            // use the deferreds below.
+            viewDeferred = $.Deferred();
+            apiDeferred = $.Deferred();
             worker = new PurchaseTitleWorker(view, api);
+
+            sinon.stub(view, "showLoginModal", function() {
+                return viewDeferred.promise();
+            });
         });
 
         it("initializes the worker with an api and a view object", function() {
