@@ -41,24 +41,39 @@ describe("Deferred Example", function() {
     //  api
     //
 
-    describe("with a PurchaseTitleWorker", function() {
 
-        it("initializes the worker with an api and a view object", function() {
+    describe("The PurchaseTitleWorker", function() {
 
+        var worker, api, view;
+
+        beforeEach(function() {
+            api = 1;
+            view = {
+                showLoginModal: sinon.spy()
+            };
+            worker = new PurchaseTitleWorker(view, api);
         });
 
-        describe("makes a purchase using purchaseTitle(titleId)", function() {
+        it("initializes the worker with an api and a view object", function() {
+            should.exist(worker.getApi());
+            should.exist(worker.getView());
+        });
 
-            describe("for unauthorzied users", function() {
+        describe("makes a purchase using purchaseTitle(titleId).", function() {
 
-                it("the authToken is empty", function() {
+            beforeEach(function() {
+                worker.purchaseTitle(123);
+            });
+            describe("For unauthorzied users", function() {
 
+                it("the authToken does not exist", function() {
+                    should.not.exist(worker.getAuthToken());
                 });
 
                 describe("the login modal", function() {
 
                     it("is displayed", function() {
-
+                        view.showLoginModal.should.have.been.calledOnce;
                     });
 
                     it("returns a promise that when resolved continues with the purchase " +
