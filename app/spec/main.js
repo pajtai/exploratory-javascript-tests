@@ -134,6 +134,33 @@ describe("Object", function() {
     });
 });
 
+
+describe("Scope", function() {
+
+    it("Functions have access to variables in their enclosing scope", function() {
+
+        var vary = 1;
+        test();
+
+        function test() {
+            expect(vary).to.equal(1);
+        }
+    });
+
+
+    it("Functions do not have access to variables that are only in the scope where they are called", function() {
+
+        (function() {
+            var vary = 1;
+            test();
+        }());
+
+        function test() {
+            expect(typeof vary).to.equal("undefined");
+        }
+    });
+});
+
 describe("slice()", function() {
 
     var input, answer;
