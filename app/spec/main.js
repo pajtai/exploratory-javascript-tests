@@ -1,3 +1,4 @@
+/*global describe:false, it:false, expect:false */
 var expect = chai.expect;
 
 describe("Object", function() {
