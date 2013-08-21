@@ -1,7 +1,58 @@
+/*global describe:false, it:false, expect:false, beforeEach:false */
 var should = chai.should();
 
 // Includel a stack trace when needed
 // chai.Assertion.includeStack = true;
+
+describe("jQuery Objects", function() {
+    var $root,
+        $lis;
+
+    beforeEach(function() {
+        var i;
+
+        $root = $("<div/>");
+        for (i=0; i<10; ++i) {
+            $root.append(
+                $("<li/>").text(i)
+            );
+        }
+    });
+
+    it("A jQuery method call on a jQuery collection is applied to all elements in the collection", function() {
+
+        var $lis = $root.find("li"),
+            i;
+
+        for (i=0; i<10; ++i) {
+            $root.find("li:eq("+ i +")").text().should.equal("" + i);
+        }
+
+        $lis.text("new");
+
+        for (i=0; i<10; ++i) {
+            $root.find("li:eq("+ i +")").text().should.equal("new");
+        }
+    });
+
+    it("A jQuery method call can take a callback and apply it to all elements in the collection", function() {
+        var $lis = $root.find("li"),
+            counter = 10,
+            i;
+
+        for (i=0; i<10; ++i) {
+            $root.find("li:eq("+ i +")").text().should.equal("" + i);
+        }
+
+        $lis.text(function() {
+            return counter++;
+        });
+
+        for (i=0; i<10; ++i) {
+            $root.find("li:eq("+ i +")").text().should.equal("" + (i + 10));
+        }
+    });
+});
 
 describe("Deferred", function() {
 
