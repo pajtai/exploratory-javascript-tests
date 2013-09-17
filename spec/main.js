@@ -1,5 +1,6 @@
 /*global describe:false, it:false, expect:false */
-var expect = chai.expect;
+var should = chai.should(),
+    expect = chai.expect;
 
 describe("Object", function() {
 
@@ -7,7 +8,7 @@ describe("Object", function() {
 
     it("objects have a constructor field", function() {
 
-       expect(obj.constructor).to.exist;
+        should.exist(obj.constructor);
     });
 
     describe("Array", function() {
@@ -17,7 +18,7 @@ describe("Object", function() {
 
             arr[99] = "test";
             arr[-3] = "test";
-            expect(arr.length).to.equal(100);
+            arr.length.should.equal(100);
         });
 
         it("arrays can be differentiated from other objects using the constructor field", function() {
@@ -28,12 +29,11 @@ describe("Object", function() {
                 i;
 
             for (i = 0; i < arrs.length; ++i) {
-                expect(arrs[i].constructor).to.equal(Array);
-                expect(arrs[i].constructor).not.to.equal(Object);
+                arrs[i].constructor.should.equal(Array);
             }
 
             for (i = 0; i < objs.length; ++i) {
-                expect(objs[i].constructor).not.to.equal(Array);
+                objs[i].constructor.should.not.equal(Array);
             }
         });
 
@@ -42,7 +42,8 @@ describe("Object", function() {
             var arr =[];
 
             arr[-1] = "tomato";
-            expect(arr[-1]).to.equal("tomato");
+
+            arr[-1].should.equal("tomato");
         });
     });
 
@@ -52,14 +53,12 @@ describe("Object", function() {
             testDeclaration = true;
 
         it("Function Declarations are not hoisted but defined for entire block", function() {
-
-            expect(typeof testDeclaration).to.equal("function");
+            (typeof testDeclaration).should.equal("function")
             function testDeclaration() {};
         });
 
         it("Function expressions are hoisted", function() {
-
-            expect(typeof testExpression).to.equal("undefined");
+            (typeof testExpression).should.equal("undefined");
             var testExpression = function() {};
         });
 
@@ -71,9 +70,9 @@ describe("Object", function() {
                 objIn.val = true;
             }
 
-            expect(obj.val).to.equal(false);
+            obj.val.should.equal(false);
             changeObj(obj);
-            expect(obj.val).to.equal(true);
+            obj.val.should.equal(true);
         });
 
         it("An object passed as an argument remains unchanged if overwritten inside a function", function () {
@@ -82,34 +81,15 @@ describe("Object", function() {
                     objIn = { val: false };
                 };
 
-            expect(obj.val).to.equal(true);
+            obj.val.should.equal(true);
             func(obj);
-            expect(obj.val).to.equal(true);
+            obj.val.should.equal(true);
         });
     });
 
    describe("Object inheritance", function() {
 
-       it("changing the prototype, changes that field on all other objects with that prototype dynamically", function() {
-
-           var Const1 = function() {},
-               Const2 = function() {},
-               obj1, obj2;
-
-           Const1.prototype.test = 42;
-
-           obj1 = new Const1();
-           Const2.prototype = obj1;
-           obj2 = new Const2();
-
-           expect(obj1.prototype).to.equal(obj2.prototype);
-           expect(obj1.test).to.equal(42);
-           expect(obj2.test).to.equal(42);
-
-           Const1.prototype.test = "new";
-
-           expect(obj1.test).to.equal("new");
-           expect(obj2.test).to.equal("new");
+       xit("changing the prototype, changes that field on all other objects with that prototype dynamically", function() {
        });
    });
 
@@ -158,6 +138,11 @@ describe("Scope", function() {
         function test() {
             expect(typeof vary).to.equal("undefined");
         }
+    });
+
+    it("Anonymous functions are scoped to the global context", function() {
+        var anon = function() { return this; };
+        should.equal(anon(), window);
     });
 });
 
