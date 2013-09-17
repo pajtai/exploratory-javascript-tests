@@ -54,7 +54,15 @@ describe("jQuery Objects", function() {
     });
 });
 
-describe("Deferred", function() {
+describe("$.contains", function() {
+    it("$.contains determines whether an item is in an array", function() {
+        var a = {b: 1},
+            obj = {a: a};
+        $.contains(obj, a).should.be.true;
+    });
+});
+
+describe("$.Deferred", function() {
 
     var deferred,
         promise,
